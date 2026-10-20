@@ -1295,6 +1295,43 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; lette
     ]
   };
 
+  /* Screen 02 gets two options: the complete attack when everything works, and attack -> loss -> drop. */
+  (function () {
+    var loss = { id: 'B', label: 'Attack, loss and drop' };
+    ['call', 'situation', 'players', 'ballPath', 'decision', 'mistake', 'init', 'shape', 'steps'].forEach(function (k) {
+      loss[k] = identity[k];
+      delete identity[k];
+    });
+    var good = {
+      id: 'A', label: 'Complete attack: everything works',
+      call: 'One winger cuts, the other stays wide.',
+      rule: 'One winger attacks the middle, the other keeps the width.',
+      situation: 'We have the ball in our half and everything works: the shape holds, the ball circulates, the pivot creates space and a winger finishes.',
+      players: {
+        DEF: 'Lowest player. Steps up to halfway at most to draw the press, relays the ball and switches play. Never higher than the ball.',
+        LW: 'Holds the left touchline. Receives wide, drives at the block, then attacks the middle once the ball is on the other side.',
+        RW: 'Holds the right touchline while the ball is on the left, receives the switch and plays the ball into the run.',
+        PIV: 'Highest player. Comes short to drag his marker away and open the space behind him.'
+      },
+      ballPath: 'Defender → Left Winger → Defender → Right Winger → Left Winger (into the run) → shot.',
+      decision: 'Stay in the 1-2-1 and move the ball until the block opens: pressure on one side means space on the other.',
+      mistake: 'Both wingers cutting inside together, or the Defender joining the attack and leaving nobody behind the ball.',
+      init: clone(attack.init),
+      shape: true,
+      steps: [{
+        d: 2.2, t: 'Attack shape: 1-2-1',
+        x: 'One low ({DEF}), two wide ({LW} and {RW}), one high ({PIV}). This is where every attack starts.',
+        tags: { DEF: 'Low', LW: 'Wide', RW: 'Wide', PIV: 'High' }
+      }].concat(clone(attack.steps)).concat([{
+        d: 2.0, t: 'After the shot: stay balanced',
+        x: '{DEF} stays back as the safety player. {RW} and {PIV} follow up the rebound. Nobody is stranded if we lose it.',
+        m: { DEF: [10, 24.5], RW: [15.5, 12.5], PIV: [11.8, 12.6] },
+        tags: { DEF: 'Safety' }
+      }])
+    };
+    identity.variants = [good, loss];
+  })();
+
   /* ------------------------------------------------------------------ */
   /* 04 — The pivot: come short or hold                                   */
   /* ------------------------------------------------------------------ */

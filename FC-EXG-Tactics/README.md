@@ -18,7 +18,7 @@ offline, and can be sent to the players over WhatsApp or by email. Everything is
 | # | Screen | What it shows |
 |---|--------|---------------|
 | 01 | Home | Crest, Coach Guillo, the objective |
-| 02 | Identity | 1-2-1 in attack, 2-2 in defence, how we move from one to the other |
+| 02 | Identity | Option A: the complete 1-2-1 attack when everything works (shape, switch, pivot comes short, finish, stay balanced). Option B: attack, loss, drop into the 2-2, ball won back |
 | 03 | Build-up | Defender steps up, switch of play, pivot comes short, far winger attacks the middle |
 | 04 | Pivot | Option A: pivot comes short, winger attacks the space. Option B: pivot holds, turns and finishes |
 | 05 | Drop | Default drop into the 2-2, mutual cover, and the official 5v5 version with goalkeepers |
