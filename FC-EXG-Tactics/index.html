@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FC EXG Tactical Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app" id="app">
+
+  <header class="topbar">
+    <button class="brand" type="button" data-go="0" aria-label="FC EXG home">
+      <img src="assets/crest.jpg" alt="FC EXG crest" width="40" height="40">
+      <span class="brand-text"><strong>FC EXG</strong><small>Tactical board</small></span>
+    </button>
+    <nav class="nav" id="nav" aria-label="Briefing screens"></nav>
+    <div class="top-actions">
+      <button class="btn ghost" type="button" id="btnNames" title="Edit player names">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm-8 1a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm8 1c-2.7 0-8 1.3-8 4v3h16v-3c0-2.7-5.3-4-8-4zm-8 0c-.3 0-.7 0-1.1.1A5 5 0 0 1 9 17v3H1v-2.5C1 15.2 5.7 13 8 13z"/></svg>
+        <span>Squad</span>
+      </button>
+      <button class="btn ghost" type="button" id="btnFull" title="Presentation mode (F)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5v2H6v3zm10-5h6v5h-2V6h-4zM4 15h2v3h3v2H4zm14 0h2v5h-5v-2h3z"/></svg>
+        <span>Present</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="screens">
+
+    <!-- 01 HOME -->
+    <section class="screen home" id="screen-home" aria-label="Welcome">
+      <div class="home-hero">
+        <div class="home-copy">
+          <img class="home-crest" src="assets/crest.jpg" alt="FC EXG crest" width="200" height="200">
+          <p class="eyebrow">Futsal tournament · Tactical preparation</p>
+          <h1 class="home-title"><span class="club">FC EXG</span>One team. One mindset. One mission.</h1>
+          <p class="home-sub">Tactical preparation — Target: Friday.</p>
+          <p class="home-coach">Head Coach: <strong>Guillo</strong></p>
+          <div class="home-cta">
+            <button class="btn gold big" type="button" data-go="1">Start the briefing
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5l7 7-7 7-1.4-1.4 4.6-4.6H4v-2h12.2l-4.6-4.6z"/></svg>
+            </button>
+            <button class="btn line big" type="button" data-open-names>Enter player names</button>
+          </div>
+        </div>
+        <figure class="coach-card">
+          <img src="assets/coach-field.jpg" alt="Coach Guillo on the training pitch" width="1300" height="1381">
+          <figcaption><span>Head Coach</span><strong>Guillo</strong><em>“Communication is our first advantage.”</em></figcaption>
+        </figure>
+      </div>
+      <div class="home-agenda">
+        <div class="agenda-head">
+          <h2>The briefing</h2>
+          <p>Eight animated sequences. Training format: <strong>4 v 4 without goalkeepers</strong>, a simplified drill to learn the movements. Tournament format: <strong>5 v 5 futsal</strong>.</p>
+        </div>
+        <ol class="agenda" id="agenda"></ol>
+      </div>
+    </section>
+
+    <!-- 02–09 TACTICAL BOARD -->
+    <section class="screen board" id="screen-board" aria-label="Tactical board" hidden>
+      <div class="stage">
+        <div class="callbar">
+          <span class="call-label">Coach call</span>
+          <div class="call-body">
+            <p class="call-text" id="callText"></p>
+            <p class="call-rule" id="ruleText" hidden></p>
+          </div>
+        </div>
+        <div class="variants" id="variants" role="tablist" aria-label="Options"></div>
+        <div class="pitch-wrap" id="pitchWrap">
+          <div class="pitch-box" id="pitchBox">
+            <svg id="pitch" viewBox="-14 -22 228 444" role="img" aria-label="Futsal pitch, our goal at the bottom"></svg>
+            <div class="freeze-badge" id="freezeBadge" hidden>Freeze frame · drag players to explain</div>
+          </div>
+        </div>
+        <div class="caption" id="caption"></div>
+        <div class="cond" id="condBox" hidden></div>
+        <p class="step-detail" id="stepDetail"></p>
+        <div class="controls" id="controls">
+          <div class="scrub">
+            <input type="range" id="scrub" min="0" max="1000" value="0" step="1" aria-label="Timeline">
+            <div class="ticks" id="ticks"></div>
+          </div>
+          <div class="ctrl-row">
+            <div class="transport">
+              <button class="ic" type="button" id="btnRestart" title="Restart (R)" aria-label="Restart">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
+              </button>
+              <button class="ic" type="button" id="btnPrev" title="Previous step (←)" aria-label="Previous step">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h2v12H6zm3.5 6L18 18V6z"/></svg>
+              </button>
+              <button class="ic play" type="button" id="btnPlay" title="Play / pause (Space)" aria-label="Play">
+                <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+              </button>
+              <button class="ic" type="button" id="btnNext" title="Next step (→)" aria-label="Next step">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
+              </button>
+              <button class="ic freeze" type="button" id="btnFreeze" title="Freeze frame (Z)" aria-pressed="false" aria-label="Freeze frame">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 2h2v4.1l2.5-2.5 1.4 1.4L13 8.9V11h2.1l3.9-3.9 1.4 1.4L17.9 11H22v2h-4.1l2.5 2.5-1.4 1.4-3.9-3.9H13v2.1l3.9 3.9-1.4 1.4-2.5-2.5V22h-2v-4.1l-2.5 2.5-1.4-1.4 3.9-3.9V13H8.9L5 16.9l-1.4-1.4L6.1 13H2v-2h4.1L3.6 8.5 5 7.1 8.9 11H11V8.9L7.1 5l1.4-1.4L11 6.1z"/></svg>
+                <span>Freeze</span>
+              </button>
+            </div>
+            <div class="seg" id="speedSeg" role="group" aria-label="Speed">
+              <button type="button" data-speed="0.5">Slow</button>
+              <button type="button" data-speed="1" class="on">Normal</button>
+              <button type="button" data-speed="1.6">Fast</button>
+            </div>
+          </div>
+        </div>
+        <div class="options">
+            <div class="toggles">
+              <label class="tg"><input type="checkbox" id="tgStep"><span>Pause each step</span></label>
+              <label class="tg"><input type="checkbox" id="tgArrows" checked><span>Arrows</span></label>
+              <label class="tg"><input type="checkbox" id="tgNames" checked><span>Names</span></label>
+              <label class="tg"><input type="checkbox" id="tgLand"><span>Landscape pitch</span></label>
+              <button class="tg-btn" type="button" id="btnPanel" title="Show / hide the explanation panel (P)">Panel</button>
+            </div>
+        </div>
+      </div>
+
+      <aside class="panel" id="panel">
+        <p class="eyebrow" id="pKicker"></p>
+        <h1 class="p-title" id="pTitle"></h1>
+        <div class="chips" id="pChips"></div>
+        <div class="p-block">
+          <h3>Starting situation</h3>
+          <p id="pSituation"></p>
+        </div>
+        <div class="p-block">
+          <h3>Steps</h3>
+          <ol class="steps" id="pSteps"></ol>
+        </div>
+        <div class="cards">
+          <div class="card good"><h3>Expected decision</h3><p id="pDecision"></p></div>
+          <div class="card bad"><h3>Mistake to avoid</h3><p id="pMistake"></p></div>
+        </div>
+        <details class="p-block fold" open>
+          <summary><h3>Each player’s job</h3></summary>
+          <dl class="roles" id="pRoles"></dl>
+        </details>
+        <div class="p-block">
+          <h3>Ball</h3>
+          <p id="pBall"></p>
+        </div>
+        <ul class="notes" id="pNotes" hidden></ul>
+        <div class="legend">
+          <span><i class="lg dot a"></i>FC EXG starters</span>
+          <span><i class="lg dot b"></i>Training opponents (subs)</span>
+          <span><i class="lg run"></i>Run</span>
+          <span><i class="lg pass"></i>Pass</span>
+          <span><i class="lg cover"></i>Covers</span>
+        </div>
+        <p class="keys">Keys: Space play/pause · ← → steps · R restart · Z freeze · 1 2 3 speed · L landscape · F present · N / B next / previous screen</p>
+      </aside>
+    </section>
+
+    <!-- 10 FINAL -->
+    <section class="screen final" id="screen-final" aria-label="Coach's final words" hidden>
+      <div class="final-bg" aria-hidden="true"><img src="assets/coach-board.jpg" alt="" width="1400" height="920"></div>
+      <div class="final-inner">
+        <img class="final-crest" src="assets/crest.jpg" alt="FC EXG crest" width="150" height="150">
+        <p class="eyebrow">Coach Guillo · Final words</p>
+        <h1 class="final-title"><span class="club">FC EXG</span>United by the game. Driven by victory.</h1>
+        <p class="final-lead">“Friday, we don’t discover our game. We execute it.”</p>
+        <p class="final-triad"><span>Discipline.</span><span>Solidarity.</span><span>Intensity.</span></p>
+        <ol class="principles" id="principles"></ol>
+        <p class="final-one">One group. One goal.</p>
+        <p class="signature">Signed: <strong>Guillo</strong> — Head Coach, FC EXG</p>
+        <div class="final-cta">
+          <button class="btn gold" type="button" data-go="1">Replay the briefing</button>
+          <button class="btn line" type="button" data-go="0">Back to home</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Quote between sequences -->
+  <div class="quote-overlay" id="quoteOverlay" hidden>
+    <div class="quote-inner">
+      <img src="assets/crest.jpg" alt="" width="72" height="72">
+      <p id="quoteText"></p>
+      <span class="quote-skip">Tap to continue</span>
+    </div>
+  </div>
+
+  <!-- Squad names -->
+  <div class="modal" id="namesModal" hidden role="dialog" aria-modal="true" aria-labelledby="namesTitle">
+    <form class="modal-card" id="namesForm">
+      <h2 id="namesTitle">Squad names</h2>
+      <p class="modal-sub">Names appear under each marker and in the explanations. Saved on this device.</p>
+      <div class="names-grid">
+        <fieldset>
+          <legend><i class="lg dot a"></i>Team A · FC EXG starters</legend>
+          <label for="n-DEF">Defender</label><input id="n-DEF" data-id="DEF" maxlength="18" autocomplete="off">
+          <label for="n-LW">Left Winger</label><input id="n-LW" data-id="LW" maxlength="18" autocomplete="off">
+          <label for="n-RW">Right Winger</label><input id="n-RW" data-id="RW" maxlength="18" autocomplete="off">
+          <label for="n-PIV">Pivot</label><input id="n-PIV" data-id="PIV" maxlength="18" autocomplete="off">
+          <label for="n-GK">Goalkeeper (5v5)</label><input id="n-GK" data-id="GK" maxlength="18" autocomplete="off">
+        </fieldset>
+        <fieldset>
+          <legend><i class="lg dot b"></i>Team B · substitutes (opponents)</legend>
+          <label for="n-O1">Opponent 1</label><input id="n-O1" data-id="O1" maxlength="18" autocomplete="off">
+          <label for="n-O2">Opponent 2</label><input id="n-O2" data-id="O2" maxlength="18" autocomplete="off">
+          <label for="n-O3">Opponent 3</label><input id="n-O3" data-id="O3" maxlength="18" autocomplete="off">
+          <label for="n-O4">Opponent 4</label><input id="n-O4" data-id="O4" maxlength="18" autocomplete="off">
+        </fieldset>
+      </div>
+      <div class="modal-actions">
+        <button class="btn line" type="button" id="namesReset">Reset to roles</button>
+        <span class="spacer"></span>
+        <button class="btn ghost" type="button" id="namesCancel">Cancel</button>
+        <button class="btn gold" type="submit">Save names</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/engine.js"></script>
+<script src="js/scenes.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
